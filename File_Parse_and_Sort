@@ -1,0 +1,32 @@
+name = input("Enter file: ")
+try:
+    file = open(name, 'r')
+except:
+    print('File cannot be opened: ', name)
+    exit()
+count = 0
+email_counting = dict()
+
+for line in file:
+    if line.startswith('From '):
+    # Remove trailing whitespaces from each line
+        line = line.rstrip()
+            # Split the line into words
+        words = line.split()
+        time = words[5]
+        #print(time)
+        hour = time[0:2]
+        #print(hour)
+        if hour not in email_counting:
+            email_counting[hour] = 1
+        else:
+            email_counting[hour] += 1
+#print(email_counting)
+        
+lst = list()
+for key, val in list(email_counting.items()):
+    lst.append((key, val))
+lst.sort()
+
+for key, val in lst:
+    print(key, val)
