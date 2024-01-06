@@ -1,0 +1,38 @@
+name = input("Enter file: ")
+try:
+    file = open(name, 'r')
+except FileNotFoundError:
+    print('File cannot be opened: ', name)
+    exit()
+
+count = 0
+total_confidence = 0
+
+for line in file:
+    if line.startswith('X-DSPAM-Confidence:'):
+        try:
+            # Extract the confidence value from the line
+            confidence_str = line.split(':')[1].strip()
+
+            #convert the confidence value to a float
+            confidence = float(confidence_str)
+
+            #increment the count and add confidence to total
+            count += 1
+            total_confidence += confidence
+        
+        except ValueError:
+            print('Invalid confidence value found in line: ', line)
+    
+# Check if there are lines with "X-DSPAM-Confidence" in the file
+if count > 0:
+    #Calculate the average confidence
+    average_confidence = total_confidence / count
+
+    # Print the results
+    print('Number of lines with X-DSPAM-Confidence:', count)
+    print("Average spam confidence:", average_confidence)
+else:
+    print('No lines with X-DSPAM-Confidence found in the file.')
+
+file.close()
